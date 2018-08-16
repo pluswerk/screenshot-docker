@@ -12,13 +12,16 @@ import puppeteer from 'puppeteer';
 
   async function takeScreenshot(browser, options, url) {
     try {
-      const page = await browser.newPage();
+      var page = await browser.newPage();
       await page.setViewport(options);
       await page.goto(url);
-      return await page.screenshot();
+      const screenshot = await page.screenshot();
+      if (page) {
+        await page.close();
+      } return screenshot
     } catch (e) {
       if (page) {
-        page.close();
+        await page.close();
       }
       throw e;
     }
